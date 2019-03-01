@@ -22,12 +22,14 @@ import kmk.kmktime  # isort:skip
 import kmk.types  # isort:skip
 import kmk.util  # isort:skip
 
+
+import kmk.handlers.layers  # isort:skip
+import kmk.handlers.stock  # isort:skip
+# Now handlers that will be used in keys later
+
 import busio
 import gc
 
-import kmk.handlers.layers
-import kmk.handlers.stock
-# Now handlers that will be used in keys later
 import supervisor
 from kmk import led, rgb
 from kmk.consts import LeaderMode, UnicodeMode
@@ -120,16 +122,22 @@ class Firmware:
             self._send_hid()
 
     def _handle_matrix_report(self, update=None):
-        """
+        '''
         Bulk processing of update code for each cycle
         :param update:
-        """
+        '''
         if update is not None:
-            self._state.matrix_changed(
-                update[0],
-                update[1],
-                update[2],
-            )
+            # TODO Sort why this is needed when mashing keys on split half
+            # This is a dirty hack to prevent crashes in unrealistic cases
+            try:
+                self._state.matrix_changed(
+                    update[0],
+                    update[1],
+                    update[2],
+                )
+            except Exception as e:
+                print(e)
+                print(update)
 
     def _send_to_master(self, update):
         if self.split_master_left:
@@ -151,11 +159,11 @@ class Firmware:
         return None
 
     def _send_debug(self, message):
-        """
+        '''
         Prepends DEB and appends a newline to allow debug messages to
         be detected and handled differently than typical keypresses.
         :param message: Debug message
-        """
+        '''
         if self.uart is not None:
             self.uart.write('DEB')
             self.uart.write(message, '\n')
@@ -182,9 +190,9 @@ class Firmware:
         if self.split_flip and not self._master_half():
             self.col_pins = list(reversed(self.col_pins))
 
-        if self.split_side == "Left":
+        if self.split_side == 'Left':
             self.split_master_left = self._master_half()
-        elif self.split_side == "Right":
+        elif self.split_side == 'Right':
             self.split_master_left = not self._master_half()
 
         if self.uart_pin is not None:
@@ -226,7 +234,7 @@ class Firmware:
                 del self.leader_dictionary[k]
 
         if self.debug_enabled:
-            print("Firin' lazers. Keyboard is booted.")
+            print('Firin\' lazers. Keyboard is booted.')
 
         while True:
             state_changed = False

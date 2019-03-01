@@ -6,14 +6,14 @@ from kmk.pins import Pin as P
 
 
 class Firmware(_Firmware):
-    # Pin mappings for converter board found at hardware/README.md
-    # QMK: MATRIX_COL_PINS { F6, F7, B1, B3, B2, B6 }
-    # QMK: MATRIX_ROW_PINS { D7, E6, B4, D2, D4 }
     col_pins = (P.A2, P.A3, P.A4, P.A5, P.SCK, P.MOSI)
-    row_pins = (P.D11, P.D10, P.D9, P.RX, P.D13)
+    row_pins = (P.D13, P.D11, P.D10, P.D9)
     diode_orientation = DiodeOrientation.COLUMNS
 
+    split_type = 'UART'
     split_flip = True
-    split_offsets = (6, 6, 6, 6, 6)
-    split_type = "UART"
+    split_offsets = [6, 6, 6, 6, 6]
     uart_pin = board.SCL
+    extra_data_pin = board.SDA
+    rgb_pixel_pin = board.TX
+    #led_pin = board.D7
