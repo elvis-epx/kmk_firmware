@@ -26,6 +26,7 @@ import busio  # isort:skip
 import gc  # isort:skip
 
 import supervisor  # isort:skip
+from kmk import led, rgb  # isort:skip
 from kmk.consts import LeaderMode, UnicodeMode  # isort:skip
 from kmk.hid import USB_HID  # isort:skip
 from kmk.internal_state import InternalState  # isort:skip
