@@ -23,7 +23,6 @@ import kmk.types  # isort:skip
 import kmk.util  # isort:skip
 
 import busio  # isort:skip
-import gc  # isort:skip
 
 import supervisor  # isort:skip
 from kmk import led, rgb  # isort:skip
@@ -269,5 +268,3 @@ class Firmware:
                 # Only check animations if led is initialized
                 if self.led.animation_mode:
                     self.led = self.led.animate()
-
-            gc.collect()
