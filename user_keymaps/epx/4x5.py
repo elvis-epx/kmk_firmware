@@ -17,25 +17,38 @@ keyboard.diode_orientation = DiodeOrientation.ROWS # ROW2COL
 
 # ---------------------- Keymap ---------------------------------------------------------
 
+def layer_changed(key, state, kc, coord_int, coord_raw):
+    if not state.active_layers:
+        return
+    layer = state.active_layers[-1]
+    led[0] = ((255, 0, 0), (0, 255, 0), (0, 0, 255))[layer]
+
+mod0 = KC.TO(0)
+mod1 = KC.TO(1)
+mod2 = KC.TO(2)
+mod0.after_press_handler(layer_changed)
+mod1.after_press_handler(layer_changed)
+mod2.after_press_handler(layer_changed)
+
 keyboard.keymap = [
     [
         [KC.ESC, KC.VOLD, KC.VOLU, KC.BSPC],
-        [KC.P7,  KC.P8,   KC.P9,   KC.TO(1)],
-        [KC.P4,  KC.P5,   KC.P6,   KC.TO(1)],
+        [KC.P7,  KC.P8,   KC.P9,   mod1],
+        [KC.P4,  KC.P5,   KC.P6,   mod1],
         [KC.P1,  KC.P2,   KC.P3,   KC.PENT],
         [KC.P0,  KC.P0,   KC.PDOT, KC.PENT]
     ],
     [
         [KC.ESC,  KC.VOLD, KC.VOLU, KC.BSPC],
-        [KC.HOME, KC.UP,   KC.PGUP,   KC.TO(2)],
-        [KC.LEFT, KC.NO,   KC.RGHT,   KC.TO(2)],
+        [KC.HOME, KC.UP,   KC.PGUP,   mod2],
+        [KC.LEFT, KC.NO,   KC.RGHT,   mod2],
         [KC.END,  KC.DOWN, KC.PGDN,   KC.PENT],
         [KC.INS,  KC.INS,  KC.DEL,    KC.PENT]
     ],
     [
         [KC.ESC,  KC.VOLD, KC.VOLU, KC.BSPC],
-        [KC.SPC,  KC.B,    KC.C,    KC.TO(0)],
-        [KC.NO,   KC.NO,   KC.NO,   KC.TO(0)],
+        [KC.SPC,  KC.B,    KC.C,    mod0],
+        [KC.NO,   KC.NO,   KC.NO,   mod0],
         [KC.MPRV, KC.MNXT, KC.MSTP, KC.PENT],
         [KC.MUTE, KC.MUTE, KC.MPLY, KC.PENT]
     ]
