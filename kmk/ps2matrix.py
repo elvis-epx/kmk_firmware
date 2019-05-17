@@ -12,7 +12,7 @@ class PS2MatrixScanner:
 			if matrix[row] == self.state[row]:
 				continue
 			self.report[0] = row
-			for col in range(0, 7):
+			for col in range(0, 8):
 				bit = 1 << col
 				if (matrix[row] & bit) == (self.state[row] & bit):
 					continue
