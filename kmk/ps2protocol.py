@@ -1,4 +1,4 @@
-from pulseio import Ps2
+from ps2io import Ps2
 
 class PS2Protocol:
 	def __init__(self, data_pin, clock_pin):
