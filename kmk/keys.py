@@ -378,6 +378,7 @@ make_mod_key(code=0x10, names=('RIGHT_CONTROL', 'RCTRL', 'RCTL'))
 make_mod_key(code=0x20, names=('RIGHT_SHIFT', 'RSHIFT', 'RSFT'))
 make_mod_key(code=0x40, names=('RIGHT_ALT', 'RALT'))
 make_mod_key(code=0x80, names=('RIGHT_SUPER', 'RGUI', 'RCMD', 'RWIN'))
+make_mod_key(code=0x65, names=('WIN_MENU', 'SEL', 'MENU', 'WMENU'))
 # MEH = LCTL | LALT | LSFT
 make_mod_key(code=0x07, names=('MEH',))
 # HYPR = LCTL | LALT | LSFT | LGUI
@@ -480,6 +481,7 @@ make_key(code=115, names=('F24',))
 gc.collect()
 
 # Lock Keys, Navigation, etc.
+ # actually, PS/2 data lines
 make_key(code=57, names=('CAPS_LOCK', 'CAPSLOCK', 'CLCK', 'CAPS'))
 # FIXME: Investigate whether this key actually works, and
 #        uncomment when/if it does.
