@@ -1,5 +1,9 @@
 from ps2io import Ps2
 
+# Implements PS/2 keyboard state machine, based on low-level PS/2 byte mover.
+# Translates PS/2 keys to a virtual 32x8 matrix, using the same mapping as
+# implemented by TMK project's PS/2 converter.
+
 class PS2Protocol:
 	def __init__(self, data_pin, clock_pin):
 		self.keyboard = Ps2(data_pin, clock_pin)
