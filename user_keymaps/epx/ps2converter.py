@@ -11,9 +11,25 @@ keyboard.row_pins = [board.D10, board.D11]
 keyboard.diode_orientation = 1
 
 # TODO PS/2 leds
+# (CircuitPython seems not to be able to receive USB HID events at the moment,
+# so we cannot pass the LED event down to PS/2.)
+
+# The map below relates PS/2 keycodes to USB HID keys. The translation from
+# PS/2 codes to a 32x8 virtual matrix is carried out by PS2Protocol.
+# Single-byte keycodes are directly mapped. Extended keycodes (E0,code) are
+# or'ed 0x80. This works because most keycodes are 7-bit, and the few
+# 8-bit ones are either single or extended, not both.
+#
+# Note to myself and others interested in ABNT2 layout:
+# NUBS = \ key right to Left Shift (which is shortened)
+# INT1 = RO = / key left to Right Shift (which is shortened, too)
+# PCMM = additional decimal dot key in dotmap, above ENTER
+# Also, the 0x5d key (BSLS, \ in US keyboard) is merely moved
+#     from above the double-width RETURN to left side of
+#     double-height RETURN, but the keycode is the same.
 
 keyboard.keymap = [
-    [ #   0 8       1 9       2 a       3 b       4 c       5 d       6 e      7 f
+    [ #   0 8       1 9       2 a       3 b       4 c       5 d       6 e      7 f     PS/2 keycodes
         [KC.NO,    KC.F9,    KC.NO,    KC.F5,    KC.F3,    KC.F1,    KC.F2,    KC.F12   ], # 00
         [KC.NO,    KC.F10,   KC.F8,    KC.F6,    KC.F4,    KC.TAB,   KC.GRAVE, KC.NO    ],
         [KC.NO,    KC.LALT,  KC.LSFT,  KC.INT2,  KC.LCTL,  KC.Q,     KC.N1,    KC.NO    ], # 10
