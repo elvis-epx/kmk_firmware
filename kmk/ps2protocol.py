@@ -12,8 +12,8 @@ class PS2Protocol:
 		self.matrix = bytearray(32)
 
 	def poll(self):
-		b = self.keyboard.get_byte()
-		if b >= 0:
+		if len(self.keyboard) > 0:
+			b = self.keyboard.popleft()
 			# print("PS/2 code %02x" % b)
 			self.state_handler(b)
 		elif self.matrix_made(0xfe):
