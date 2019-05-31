@@ -11,9 +11,6 @@ class MCPDualMatrixScanner:
             mask |= 1 << x
         return mask
 
-    def cpl32(self, a):
-        return 0xffffffff ^ a
-
     def set_iodir(self, v):
         # 0 = output
         self.mcp1.iodir = v & 0xffff
@@ -44,11 +41,11 @@ class MCPDualMatrixScanner:
         # MCP23017 has pull-up only, so we pull-up inputs and scan by
         # zeroing outputs. Diode points *from* input *to* output
         if self.diode_orientation == DiodeOrientation.COLUMNS:
-            self.translate_coords = True
+            self.output_is_col = True
             self.inputs = self.rows
             self.outputs = self.cols
         elif self.diode_orientation == DiodeOrientation.ROWS:
-            self.translate_coords = False
+            self.output_is_col = False
             self.inputs = self.cols
             self.outputs = self.rows
         else:
@@ -56,43 +53,37 @@ class MCPDualMatrixScanner:
                 self.diode_orientation,
             ))
 
-        output_mask = self.cpl32(self.create_mask(self.outputs))
-        self.set_iodir(output_mask)
+        output_mask = self.create_mask(self.outputs)
+        self.set_iodir(0xffffffff ^ output_mask) # outputs are LO bits
 
         self.state = bytearray(len(self.inputs) * len(self.outputs))
         self.report = bytearray(3)
 
     def scan_for_changes(self):
         ba_idx = 0
-        any_changed = False
 
         for oidx, opin in enumerate(self.outputs):
-            # set output pin LO
+            # set one output pin LO
             bits = 0xffffffff ^ (1 << opin)
             self.set_gpio(bits)
 
             # get input pins and treat the result
-            input_bits = self.get_gpio()
+            # LO = pressed, so we work on inverted value
+            input_bits = 0xffffffff ^ self.get_gpio()
 
             for iidx, ipin in enumerate(self.inputs):
-                if input_bits & (1 << ipin):
-                    new_val = 0 # HI = released
-                else:
-                    new_val = 1 # LO = pressed
+                new_val = (input_bits >> ipin) & 0x1
                 old_val = self.state[ba_idx]
 
                 if old_val != new_val:
-                    if self.translate_coords:
-                        # output is col
+                    self.state[ba_idx] = new_val
+                    if self.output_is_col:
                         self.report[0] = iidx
                         self.report[1] = oidx
                     else:
-                        # output is row
                         self.report[0] = oidx
                         self.report[1] = iidx
-
                     self.report[2] = new_val
-                    self.state[ba_idx] = new_val
                     return self.report
 
                 ba_idx += 1
