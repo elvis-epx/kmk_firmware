@@ -54,9 +54,9 @@ class MCPDualMatrixScanner:
         # Optimization: pre-cooked bitmasks
         self.moutputs = [ 0xffffffff ^ (1 << pin) for pin in self.outputs ]
         # Optimization: reverse relationship between index and pin
-        self.rinputs = [ 0 for _ in range(0, 32) ]
+        self.rinputs = {}
         for idx, pin in enumerate(self.inputs):
-            self.rinputs[pin] = idx
+            self.rinputs[1 << pin] = idx
 
         self.report = bytearray(3)
         self.state = [ 0 for _ in self.outputs ]
@@ -67,10 +67,10 @@ class MCPDualMatrixScanner:
 
         for oidx, opinmask in enumerate(self.moutputs):
             # set one output pin LO
+            # Sending commands to MCP is the big bottleneck, and only two
+            # bits change per cycle, so the extra logic is worthwhile
             output_1 = opinmask & 0xffff
             output_2 = opinmask >> 16
-            # Sending commands to MCP is the big bottleneck, and only one
-            # bit changes at a time, so the extra logic is worthwhile
             if output_1 != self.last_output_1:
                 self.mcp1.gpio = output_1
                 self.last_output_1 = output_1
@@ -81,22 +81,15 @@ class MCPDualMatrixScanner:
             # get input pins and handle if something changed
             input_bits = self.mcp1.gpio | (self.mcp2.gpio << 16)
             # LO = pressed, but we prefer to think in terms of HI = pressed
-            input_bits = (0xffffffff ^ input_bits) & self.input_mask
+            input_bits = (~input_bits) & self.input_mask
             diff = input_bits ^ self.state[oidx]
 
             if not diff:
-                # Nothing changed
                 continue
 
-            # Find one different bit and report as key pressed/released
-            pin = 0
-            diff_mask = 1
-            while (diff & 0x01) == 0:
-                pin += 1
-                diff >>= 1
-                diff_mask <<= 1
-           
-            iidx = self.rinputs[pin]
+            # Get *one* different bit and report as key pressed/released
+            diff_mask = diff & (-diff)
+            iidx = self.rinputs[diff_mask]
             self.state[oidx] ^= diff_mask
             self.report[self.r0] = oidx
             self.report[self.r1] = iidx
