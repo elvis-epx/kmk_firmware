@@ -1,6 +1,6 @@
 from kmk.consts import DiodeOrientation
 from kmk.keys import KC
-from kmk.mcus.circuitpython_samd51 import Firmware
+from kmk.mcus.circuitpython_samd51 import Firmware as _Firmware
 from kmk.pins import Pin as P
 from kmk.morse import Morse
 
@@ -9,12 +9,13 @@ import board
 led = adafruit_dotstar.DotStar(board.APA102_SCK, board.APA102_MOSI, 1)
 led[0] = (255, 255, 255)
 
-keyboard = Firmware()
+class Firmware(_Firmware):
+	debug_enabled = False
+	col_pins = (P.D13, P.A3, P.A4, P.A2)
+	row_pins = (P.D7, P.D10, P.D9, P.D12, P.D11)
+	diode_orientation = DiodeOrientation.ROWS # ROW2COL
 
-keyboard.debug_enabled = False
-keyboard.col_pins = (P.D13, P.A3, P.A4, P.A2)
-keyboard.row_pins = (P.D7, P.D10, P.D9, P.D12, P.D11)
-keyboard.diode_orientation = DiodeOrientation.ROWS # ROW2COL
+keyboard = Firmware()
 
 morse = Morse()
 
@@ -73,25 +74,25 @@ cancel.before_release_handler(mute)
 
 keyboard.keymap = [
     [
-        [KC.ESC, KC.VOLD, KC.VOLU, KC.BSPC],
-        [KC.P7,  KC.P8,   KC.P9,   mod1],
-        [KC.P4,  KC.P5,   KC.P6,   mod1],
-        [KC.P1,  KC.P2,   KC.P3,   KC.PENT],
-        [KC.P0,  KC.P0,   KC.PDOT, KC.PENT]
+        KC.ESC, KC.VOLD, KC.VOLU, KC.BSPC,
+        KC.P7,  KC.P8,   KC.P9,   mod1,
+        KC.P4,  KC.P5,   KC.P6,   mod1,
+        KC.P1,  KC.P2,   KC.P3,   KC.PENT,
+        KC.P0,  KC.P0,   KC.PDOT, KC.PENT,
     ],
     [
-        [KC.ESC,  KC.VOLD, KC.VOLU, KC.BSPC],
-        [KC.HOME, KC.UP,   KC.PGUP, mod2],
-        [KC.LEFT, KC.NO,   KC.RGHT, mod2],
-        [KC.END,  KC.DOWN, KC.PGDN, KC.PENT],
-        [KC.INS,  KC.INS,  KC.DEL,  KC.PENT]
+        KC.ESC,  KC.VOLD, KC.VOLU, KC.BSPC,
+        KC.HOME, KC.UP,   KC.PGUP, mod2,
+        KC.LEFT, KC.NO,   KC.RGHT, mod2,
+        KC.END,  KC.DOWN, KC.PGDN, KC.PENT,
+        KC.INS,  KC.INS,  KC.DEL,  KC.PENT
     ],
     [
-        [KC.ESC,  KC.VOLD, KC.VOLU, KC.BSPC],
-        [cancel,  dot,     dash,    mod0],
-        [cancel,  cancel,  cancel,  mod0],
-        [KC.MPRV, KC.MNXT, KC.MSTP, KC.PENT],
-        [spc,     spc,     KC.MPLY, KC.PENT]
+        KC.ESC,  KC.VOLD, KC.VOLU, KC.BSPC,
+        cancel,  dot,     dash,    mod0,
+        cancel,  cancel,  cancel,  mod0,
+        KC.MPRV, KC.MNXT, KC.MSTP, KC.PENT,
+        spc,     spc,     KC.MPLY, KC.PENT
     ]
 ]
 

@@ -55,12 +55,12 @@ class Morse:
 
     def trans(self, new_state, kbd_state, arg):
         transition = self.state + "_" +	new_state
-        # if kbd_state.config.debug_enabled:
-        print("transition " + transition)
+        if kbd_state.config.debug_enabled:
+            print("transition " + transition)
         m = getattr(self, transition, None)
         if not m:
-            # if kbd_state.config.debug_enabled:
-            print("        	Invalid transition")
+            if kbd_state.config.debug_enabled:
+                print("        	Invalid transition")
             return
         self.state = new_state
         m(kbd_state, arg)
@@ -100,8 +100,8 @@ class Morse:
     def TYPING_ON(self, kbd_state, arg):
         self.stop_typing_timeout(kbd_state)
         if self.code not in morse_codes:
-            # if kbd_state.config.debug_enabled:
-            print("Invalid code " + self.code)
+            if kbd_state.config.debug_enabled:
+                print("Invalid code " + self.code)
             self.code = ""
             return
         key = morse_codes[self.code]
