@@ -6,8 +6,12 @@ import board
 class Firmware(_Firmware):
 	debug_enabled = False
 	matrix_scanner = PS2MatrixScanner
-	col_pins = [board.D10, board.D11] # actually, PS/2 data lines
-	row_pins = [board.D10, board.D11]
+	col_pins = [board.D10, board.D11, 0, 0, 0, 0, 0, 0] # actually, PS/2 data lines
+	row_pins = [board.D10, board.D11, \
+                0, 0, 0, 0, 0, 0, 0 ,0, 0, 0, \
+                0, 0, 0, 0, 0, 0, 0 ,0, 0, 0, \
+                0, 0, 0, 0, 0, 0, 0 ,0, 0, 0, \
+                ]
 	diode_orientation = 1
 
 keyboard = Firmware()
