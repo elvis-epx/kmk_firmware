@@ -25,7 +25,7 @@ keyboard.keymap = [
             KC.N9,    KC.N0,    KC.MINUS, KC.EQUAL, KC.BKSP,  KC.INS,   KC.HOME,  KC.PGUP,
         KC.TAB,   KC.Q,     KC.W,     KC.E,     KC.R,     KC.T,     KC.Y,     KC.U,     KC.I,
             KC.O,     KC.P,     KC.LBRC,  KC.RBRC,  KC.BSLS,  KC.DEL,   KC.END,   KC.PGDN,
-        KC.CAPS,  KC.A,     KC.S,     KC.D,     KC.F,     KC.G,     KC.H,     KC.J,     KC.K,
+        KC.LCTL,  KC.A,     KC.S,     KC.D,     KC.F,     KC.G,     KC.H,     KC.J,     KC.K,
             KC.L,     KC.SCLN,  KC.QUOT,  XXX,      KC.ENT,   XXX,      XXX,      XXX,
         KC.LSFT,  XXX,      KC.Z,     KC.X,     KC.C,     KC.V,     KC.B,     KC.N,     KC.M,
             KC.COMMA, KC.DOT,   KC.SLASH, KC.RSFT,  XXX,      XXX,      KC.UP,    XXX,
