@@ -16,6 +16,23 @@ class Firmware(_Firmware):
 
 keyboard = Firmware()
 
+def layer_changed(key, state, kc, coord_int, coord_raw):
+    bits = 0
+    for l in state.active_layers:
+        if l == 1:
+            bits |= PS2MatrixScanner.LED_NUM_LOCK
+        elif l == 2:
+            bits |= PS2MatrixScanner.LED_SCROLL_LOCK
+    keyboard.matrix.set_led(bits)
+
+mod0 = KC.TO(0)
+mod1 = KC.TO(1)
+mod2 = KC.MO(2)
+mod0.after_press_handler(layer_changed)
+mod1.after_press_handler(layer_changed)
+mod2.after_press_handler(layer_changed)
+mod2.after_release_handler(layer_changed)
+
 XXX = KC.NO
 ___ = KC.TRNS
 
@@ -35,8 +52,8 @@ keyboard.keymap = [
         KC.RALT,  KC.RSFT,  KC.ENTER, KC.RBRC,  XXX,      KC.BSLS,  XXX,      KC.LANG5 ,
         XXX,      KC.NUBS,  KC.LANG4, KC.LANG3, KC.INT4,  XXX,      KC.BKSP,  KC.INT5  , # 60
         XXX,      KC.END,   KC.INT3,  KC.LEFT,  KC.HOME,  KC.PCMM,  XXX,      KC.NO    ,
-        KC.INS,   KC.DEL,   KC.DOWN,  KC.NO,    KC.RIGHT, KC.UP,    KC.ESC,   KC.TO(1) , # 70
-        KC.F11,   KC.PENT,  KC.PGDN,  KC.PPLS,  KC.PMNS,  KC.PGUP,  KC.MO(2), KC.NO    ,
+        KC.INS,   KC.DEL,   KC.DOWN,  KC.NO,    KC.RIGHT, KC.UP,    KC.ESC,   mod1     , # 70
+        KC.F11,   KC.PENT,  KC.PGDN,  KC.PPLS,  KC.PMNS,  KC.PGUP,  mod2,     KC.NO    ,
         XXX,      XXX,      XXX,      KC.F7,    XXX,      KC.RCMD,  KC.LCMD,  KC.NO    , # 00 ext
         XXX,      XXX,      XXX,      XXX,      XXX,      XXX,      XXX,      KC.NO    ,
         XXX,      KC.RALT,  XXX,      XXX,      KC.RCTL,  KC.MPRV,  XXX,      KC.NO    , # 10
@@ -69,8 +86,8 @@ keyboard.keymap = [
         KC.RALT,  KC.RSFT,  KC.ENTER, KC.RBRC,  XXX,      KC.BSLS,  XXX,      KC.LANG5 ,
         XXX,      KC.NUBS,  KC.LANG4, KC.LANG3, KC.INT4,  XXX,      KC.BKSP,  KC.INT5  , # 60
         XXX,      KC.P1,    KC.INT3,  KC.P4,    KC.P7,    KC.PCMM,  XXX,      KC.NO    ,      
-        KC.P0,    KC.PDOT,  KC.P2,    KC.P5,    KC.P6,    KC.P8,    KC.ESC,   KC.TO(0) , # 70
-        KC.F11,   KC.PENT,  KC.P3,    KC.PPLS,  KC.PMNS,  KC.P9,    KC.MO(2), KC.NO    ,      
+        KC.P0,    KC.PDOT,  KC.P2,    KC.P5,    KC.P6,    KC.P8,    KC.ESC,   mod0     , # 70
+        KC.F11,   KC.PENT,  KC.P3,    KC.PPLS,  KC.PMNS,  KC.P9,    mod2,     KC.NO    ,      
         XXX,      XXX,      XXX,      KC.F7,    XXX,      KC.RCMD,  KC.LCMD,  KC.NO    , # 00 ext
         XXX,      XXX,      XXX,      XXX,      XXX,      XXX,      XXX,      KC.NO    ,
         XXX,      KC.RALT,  XXX,      XXX,      KC.RCTL,  KC.MPRV,  XXX,      KC.NO    , # 10

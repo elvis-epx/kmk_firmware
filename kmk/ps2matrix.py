@@ -8,10 +8,17 @@ from kmk.ps2protocol import PS2Protocol
 # all pressed keys to generate release reports for every one).
 
 class PS2MatrixScanner:
+    LED_SCROLL_LOCK = PS2Protocol.LED_SCROLL_LOCK
+    LED_NUM_LOCK = PS2Protocol.LED_NUM_LOCK
+    LED_CAPS_LOCK = PS2Protocol.LED_CAPS_LOCK
+
     def __init__(self, cols, *args, **kwargs):
         self.k = PS2Protocol(cols[0], cols[1])
         self.state = bytearray(32)
         self.report = bytearray(3)
+    
+    def set_led(self, bits):
+        self.k.set_led(bits)
 
     def scan_for_changes(self):
         matrix = self.k.poll()

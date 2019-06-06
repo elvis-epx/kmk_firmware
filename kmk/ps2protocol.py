@@ -5,11 +5,23 @@ from ps2io import Ps2
 # implemented by TMK project's PS/2 converter.
 
 class PS2Protocol:
+    LED_SCROLL_LOCK = 0x01
+    LED_NUM_LOCK = 0x02
+    LED_CAPS_LOCK = 0x04
+
     def __init__(self, data_pin, clock_pin):
         self.keyboard = Ps2(data_pin, clock_pin)
         self.state = "IDLE"
         self.state_handler = self.H_IDLE
         self.matrix = bytearray(32)
+
+    def set_led(self, bits):
+        try:
+            self.keyboard.sendcmd(0xed)
+            self.keyboard.sendcmd(bits)
+        except RuntimeError:
+            return False
+        return True
 
     def poll(self):
         if len(self.keyboard) > 0:
