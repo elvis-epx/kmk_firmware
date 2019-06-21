@@ -75,10 +75,10 @@ cancel.before_release_handler(mute)
 keyboard.keymap = [
     [
         KC.ESC, KC.VOLD, KC.VOLU, KC.BSPC,
-        KC.P7,  KC.P8,   KC.P9,   mod1,
-        KC.P4,  KC.P5,   KC.P6,   mod1,
-        KC.P1,  KC.P2,   KC.P3,   KC.PENT,
-        KC.P0,  KC.P0,   KC.PDOT, KC.PENT,
+        KC.N7,  KC.N8,   KC.N9,   mod1,
+        KC.N4,  KC.N5,   KC.N6,   mod1,
+        KC.N1,  KC.N2,   KC.N3,   KC.PENT,
+        KC.N0,  KC.N0,   KC.DOT,  KC.PENT,
     ],
     [
         KC.ESC,  KC.VOLD, KC.VOLU, KC.BSPC,
