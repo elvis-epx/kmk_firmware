@@ -1,20 +1,20 @@
 from kmk.keys import KC
-from kmk.mcus.circuitpython_samd51 import Firmware as _Firmware
+from kmk.kmk_keyboard import KMKKeyboard
 from kmk.ps2matrix import PS2MatrixScanner
 import board
 
-class Firmware(_Firmware):
-	debug_enabled = False
-	matrix_scanner = PS2MatrixScanner
-	col_pins = [board.D10, board.D11, 0, 0, 0, 0, 0, 0] # actually, PS/2 data lines
-	row_pins = [board.D10, board.D11, \
+# TODO UNTESTED after updated to latest API
+
+keyboard = KMKKeyboard()
+
+keyboard.matrix_scanner = PS2MatrixScanner
+keyboard.col_pins = [board.D10, board.D11, 0, 0, 0, 0, 0, 0] # actually, PS/2 data lines
+keyboard.row_pins = [board.D10, board.D11, \
                 0, 0, 0, 0, 0, 0, 0 ,0, 0, 0, \
                 0, 0, 0, 0, 0, 0, 0 ,0, 0, 0, \
                 0, 0, 0, 0, 0, 0, 0 ,0, 0, 0, \
                 ]
-	diode_orientation = 1
-
-keyboard = Firmware()
+keyboard.diode_orientation = 1
 
 # TODO PS/2 leds
 # (CircuitPython seems not to be able to receive USB HID events at the moment,
