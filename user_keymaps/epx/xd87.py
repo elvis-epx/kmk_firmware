@@ -1,18 +1,17 @@
-from kmk.consts import DiodeOrientation, LeaderMode, UnicodeMode
+from kmk.matrix import DiodeOrientation
 from kmk.keys import KC
-from kmk.mcus.circuitpython_samd51 import Firmware as _Firmware
 from kmk.mcpmatrix import MCPDualMatrixScanner
+from kmk.kmk_keyboard import KMKKeyboard
 
-class Firmware(_Firmware):
-    # col, rows are I/O pins, 0x0..0xf = first MCP, 0xf..0x1f = second MCP
-    col_pins = (0x14, 0x15, 0x13, 0x11, 0x19, 0x12, 0x18, 0x10, 0x07, \
+keyboard = KMKKeyboard()
+
+# col, rows are I/O pins, 0x0..0xf = first MCP, 0xf..0x1f = second MCP
+keyboard.col_pins = (0x14, 0x15, 0x13, 0x11, 0x19, 0x12, 0x18, 0x10, 0x07, \
                      0x08, 0x0e, 0x0b, 0x06, 0x0d, 0x09, 0x0c, 0x0a)
-    row_pins = (0x1d, 0x1f, 0x1e, 0x1c, 0x1a, 0x1b)
-    diode_orientation = DiodeOrientation.ROWS
-    matrix_scanner = MCPDualMatrixScanner
-    debug_enabled = False
+keyboard.row_pins = (0x1d, 0x1f, 0x1e, 0x1c, 0x1a, 0x1b)
+keyboard.diode_orientation = DiodeOrientation.ROWS
+keyboard.matrix_scanner = MCPDualMatrixScanner
 
-keyboard = Firmware()
 
 XXX = KC.NO
 ________ = KC.TRANSPARENT

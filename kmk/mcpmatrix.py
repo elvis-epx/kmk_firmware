@@ -1,4 +1,4 @@
-from kmk.consts import DiodeOrientation
+from kmk.matrix import DiodeOrientation
 import time
 import board
 import busio
