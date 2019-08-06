@@ -1,21 +1,19 @@
-from kmk.consts import DiodeOrientation
+from kmk.matrix import DiodeOrientation
 from kmk.keys import KC
-from kmk.mcus.circuitpython_samd51 import Firmware as _Firmware
-from kmk.pins import Pin as P
+from kmk.kmk_keyboard import KMKKeyboard
 from kmk.morse import Morse
 
 import adafruit_dotstar
 import board
+
 led = adafruit_dotstar.DotStar(board.APA102_SCK, board.APA102_MOSI, 1)
 led[0] = (255, 255, 255)
 
-class Firmware(_Firmware):
-	debug_enabled = False
-	col_pins = (P.D13, P.A3, P.A4, P.A2)
-	row_pins = (P.D7, P.D10, P.D9, P.D12, P.D11)
-	diode_orientation = DiodeOrientation.ROWS # ROW2COL
-
-keyboard = Firmware()
+P = board
+keyboard = KMKKeyboard()
+keyboard.col_pins = (P.D13, P.A3, P.A4, P.A2)
+keyboard.row_pins = (P.D7, P.D10, P.D9, P.D12, P.D11)
+keyboard.diode_orientation = DiodeOrientation.ROWS # ROW2COL
 
 morse = Morse()
 
