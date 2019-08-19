@@ -42,7 +42,7 @@ keyboard.keymap = [
             ________, ________, ________, ________, ________, ________, ________, ________,
         ________, ________, ________, ________, ________, ________, ________, ________, ________,
             ________, ________, ________, ________, ________, ________, ________, ________,
-        KC.LGUI,  KC.LALT,  KC.LCTL,  XXX,      XXX,      XXX,      XXX,      XXX,      KC.SPACE,
+        KC.LCTL,  KC.LALT,  KC.LCTL,  XXX,      XXX,      XXX,      XXX,      XXX,      KC.SPACE,
             XXX,      KC.RCTL,  KC.RALT,  KC.RGUI,  KC.MO(2), KC.LEFT,  KC.DOWN,  KC.RIGHT,
     ],
     [
